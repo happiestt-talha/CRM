@@ -1,10 +1,11 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Controller, Get, Param, ParseIntPipe } from '@nestjs/common';
+import { UserService } from './user.service';
 
 @Controller('user')
 export class UserController {
   @Get()
   getUser() {
-    return 'Hellow from user';
+    return 'Hellow from default user';
   }
 
   @Get('all')
@@ -13,7 +14,13 @@ export class UserController {
   }
 
   @Get(':id')
-  getUserById(@Param('id') id: number) {
-    return `Hellow from user ${id}`;
+  getUserById(@Param('id', ParseIntPipe) id: number) {
+    const userService = new UserService();
+
+    const user = userService.findAllUser(id);
+    if (user.length === 0) {
+      return 'User not found';
+    }
+    return `Hello ${user[0].name} Your Age Is ${user[0].age}`;
   }
 }
