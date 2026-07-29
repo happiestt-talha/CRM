@@ -1,9 +1,14 @@
 import { Controller, Get, Param, ParseIntPipe } from '@nestjs/common';
 import { UserService } from './user.service';
+import { LoggerService } from './user.logger';
 
 @Controller('user')
 export class UserController {
-  @Get()
+  constructor(
+    private readonly userService: UserService,
+    private readonly logger: LoggerService,
+  ) {}
+
   getUser() {
     return 'Hellow from default user';
   }
@@ -15,12 +20,15 @@ export class UserController {
 
   @Get(':id')
   getUserById(@Param('id', ParseIntPipe) id: number) {
-    const userService = new UserService();
-
-    const user = userService.findAllUser(id);
+    const user = this.userService.findAllUser(id);
     if (user.length === 0) {
+      this.logger.log(`User with id ${id} not found`, 'error');
       return 'User not found';
     }
+    this.logger.log(
+      `User with id ${id} and name ${user[0].name} is found`,
+      'SUCCESS',
+    );
     return `Hello ${user[0].name} Your Age Is ${user[0].age}`;
   }
 }
