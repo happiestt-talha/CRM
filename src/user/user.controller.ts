@@ -18,6 +18,7 @@ export class UserController {
     private readonly logger: LoggerService,
   ) {}
 
+  @Get('')
   getUser() {
     return 'Hellow from default user';
   }
