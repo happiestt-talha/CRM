@@ -6,10 +6,12 @@ import {
   NotFoundException,
   Post,
   Body,
+  UseGuards,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { LoggerService } from './user.logger';
 import { CreateUserDto } from './dto/create-user.dto';
+import { RoleGuard } from 'src/guards/role.guard';
 
 @Controller('user')
 export class UserController {
@@ -24,6 +26,7 @@ export class UserController {
   }
 
   @Post('add')
+  @UseGuards(RoleGuard)
   addUser(@Body() createUserDto: CreateUserDto) {
     this.logger.log(`User added successfully`, 'success');
     // this.logger.log(`Body is ${JSON.stringify(createUserDto)}`, 'error');
