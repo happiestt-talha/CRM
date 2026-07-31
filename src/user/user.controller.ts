@@ -25,8 +25,8 @@ export class UserController {
 
   @Post('add')
   addUser(@Body() createUserDto: CreateUserDto) {
-    // this.logger.log(`User added successfully`, 'success');
-    this.logger.log(`Body is ${JSON.stringify(createUserDto)}`, 'error');
+    this.logger.log(`User added successfully`, 'success');
+    // this.logger.log(`Body is ${JSON.stringify(createUserDto)}`, 'error');
     return {
       status: 200,
       message: 'User added successfully',
